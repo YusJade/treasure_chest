@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "sync_queue/core.h"
 
 namespace treasure_chest {
@@ -8,7 +10,9 @@ class Producer {
   Producer() = delete;
   Producer(SyncQueue<TaskType> &q) : sync_queue_(q) {}
 
- protected:
+  void PutTask(const TaskType &t) { sync_queue_.Enqueue(t); }
+
+ private:
   SyncQueue<TaskType> &sync_queue_;
 };
 
@@ -18,7 +22,9 @@ class Consumer {
   Consumer() = delete;
   Consumer(SyncQueue<TaskType> &q) : sync_queue_(q) {}
 
- protected:
+  TaskType GetTask() { return std::move(sync_queue_.Dequeue()); }
+
+ private:
   SyncQueue<TaskType> &sync_queue_;
 };
 }  // namespace pattern

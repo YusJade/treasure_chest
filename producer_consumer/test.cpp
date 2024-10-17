@@ -12,7 +12,7 @@ class Camera : public treasure_chest::pattern::Producer<int8_t *> {
   void CaptureFrame() {
     while (true) {
       int8_t *frame = new int8_t[100];
-      sync_queue_.Enqueue(frame);
+      PutTask(frame);
       std::cout << "Push task -> frame size: " << sizeof(frame) << std::endl;
     }
   }
@@ -25,7 +25,7 @@ class Seeta : public treasure_chest::pattern::Consumer<int8_t *> {
 
   void Deal() {
     while (true) {
-      int8_t *frame = sync_queue_.Dequeue();
+      int8_t *frame = GetTask();
       std::cout << "Get task -> frame size: " << sizeof(frame) << std::endl;
     }
   }
